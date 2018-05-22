@@ -3,10 +3,10 @@ File: linkedbst.py
 Author: Ken Lambert
 """
 
-from binary_search_tree.abstractcollection import AbstractCollection
-from binary_search_tree.bstnode import BSTNode
-from binary_search_tree.linkedstack import LinkedStack
-from binary_search_tree.linkedqueue import LinkedQueue
+from Koval_Andrii_task1.abstractcollection import AbstractCollection
+from Koval_Andrii_task1.bstnode import BSTNode
+from Koval_Andrii_task1.linkedstack import LinkedStack
+from Koval_Andrii_task1.linkedqueue import LinkedQueue
 from math import log
 
 
@@ -18,6 +18,7 @@ class LinkedBST(AbstractCollection):
         contents of sourceCollection, if it's present."""
         self._root = None
         AbstractCollection.__init__(self, sourceCollection)
+        self._height = None
 
     # Accessor methods
     def __str__(self):
@@ -233,20 +234,28 @@ class LinkedBST(AbstractCollection):
         :return: int
         '''
 
-
         def height1(top):
             '''
             Helper function
             :param top:
             :return:
             '''
+            if top is None:
+                return -1
+            l_height = height1(top.left)
+            r_height = height1(top.right)
+            return max(l_height, r_height) + 1
 
+        if self._height is None:
+            self._height = height1(self._root)
+        return self._height
 
     def isBalanced(self):
         '''
         Return True if tree is balanced
         :return:
         '''
+        return self._height < 2 * log(2 * (self._size + 1) - 1)
 
     def rangeFind(self, low, high):
         '''
@@ -255,12 +264,39 @@ class LinkedBST(AbstractCollection):
         :param high:
         :return:
         '''
+        items_list = []
+
+        def recur_find(node):
+            if node is None:
+                return None
+            if low <= node.data <= high:
+                items_list.append(node.data)
+            recur_find(node.right)
+            recur_find(node.left)
+
+        recur_find(self._root)
+        return items_list
 
     def rebalance(self):
         '''
         Rebalances the tree.
         :return:
         '''
+        tree = LinkedBST()
+        items = sorted([i for i in self])
+
+        def balanced(tree, items):
+            if len(items) < 2:
+                for i in items:
+                    tree.add(i)
+            else:
+                tree.add(items[len(items) // 2])
+                balanced(tree, items[:len(items) // 2])
+                balanced(tree, items[len(items) // 2 + 1:])
+
+        balanced(tree, items)
+        self._height, self._root = None, tree._root
+        return tree
 
     def successor(self, item):
         """
@@ -271,6 +307,8 @@ class LinkedBST(AbstractCollection):
         :return:
         :rtype:
         """
+        tl = list(self.inorder())  # Creating tl - TreeList
+        return min(filter(lambda x: x > item, tl)) if any(tl) > item else None
 
     def predecessor(self, item):
         """
@@ -281,6 +319,8 @@ class LinkedBST(AbstractCollection):
         :return:
         :rtype:
         """
+        tl = list(self.inorder())  # Creating tl - TreeList
+        return max(filter(lambda x: x < item, tl)) if any(tl) < item else None
 
 
 if __name__ == "__main__":
