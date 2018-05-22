@@ -3,10 +3,9 @@ File: linkedbst.py
 Author: Ken Lambert
 """
 
-from Koval_Andrii_task1.abstractcollection import AbstractCollection
-from Koval_Andrii_task1.bstnode import BSTNode
-from Koval_Andrii_task1.linkedstack import LinkedStack
-from Koval_Andrii_task1.linkedqueue import LinkedQueue
+from helper_files_ADTs.abstractcollection import AbstractCollection
+from helper_files_ADTs.bstnode import BSTNode
+from helper_files_ADTs.linkedstack import LinkedStack
 from math import log
 
 
