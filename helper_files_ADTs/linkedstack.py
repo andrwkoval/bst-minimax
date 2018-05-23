@@ -3,8 +3,8 @@ File: linkedstack.py
 Author: Ken Lambert
 """
 
-from node import Node
-from abstractstack import AbstractStack
+from helper_files_ADTs.node import Node
+from helper_files_ADTs.abstractstack import AbstractStack
 
 class LinkedStack(AbstractStack):
     """A link-based stack implementation."""

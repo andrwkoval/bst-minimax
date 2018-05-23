@@ -3,7 +3,7 @@ File: abstractstack.py
 Author: Ken Lambert
 """
 
-from abstractcollection import AbstractCollection
+from helper_files_ADTs.abstractcollection import AbstractCollection
 
 class AbstractStack(AbstractCollection):
     """An abstract stack implementation."""
